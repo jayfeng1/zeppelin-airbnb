@@ -1,0 +1,285 @@
+{
+  "paragraphs": [
+    {
+      "text": "%pyspark\nfrom pyspark.sql.types import *\nfrom pyspark.sql import functions \nimport pandas as pd\n\npath \u003d \"/Users/jay/Dropbox/Coding Projects/AirBnB Project/sf_listings_zeppelin.csv\"\n\ndata \u003d pd.read_csv(path)\ndf \u003d sqlContext.createDataFrame(data)\ndf.registerTempTable(\"airbnb\")\n\nairbnb \u003d sqlContext.sql(\"\"\"\nSELECT \n    CAST(id as INT) AS                          id, \n    CAST(host_id as INT) AS                     host_id, \n    CAST(host_response_rate AS INT) AS          host_response_rate, \n    CAST(host_acceptance_rate AS INT) AS        host_acceptance_rate, \n    CAST(host_listings_count AS INT) AS         host_listings_count,\n    CAST(host_total_listings_count AS INT) AS   host_total_listings_count, \n    CAST(latitude AS FLOAT) AS                  latitude, \n    CAST(longitude AS FLOAT) AS                 longitude,\n    CAST(accommodates AS INT) AS                accommodates,\n    CAST(bathrooms AS FLOAT) AS                 bathrooms,\n    CAST(beds AS INT) AS                        beds,\n    CAST(minimum_nights AS INT) AS              minimum_nights,\n    CAST(maximum_nights AS INT) AS              maximum_nights,\n    CAST(availability_365 AS INT) AS            availability_365,\n    CAST(number_of_reviews AS INT) AS           number_of_reviews,\n    CAST(first_review AS DATE) AS               first_review,\n    CAST(last_review AS DATE) AS                last_review,\n    CAST(review_scores_rating AS INT) AS        review_scores_rating,\n    CAST(review_scores_accuracy AS INT) AS      review_scores_accuracy,\n    CAST(review_scores_cleanliness AS INT) AS   review_scores_cleanliness,\n    CAST(review_scores_checkin AS INT) AS       review_scores_checkin,\n    CAST(review_scores_communication AS INT) AS review_scores_communication,\n    CAST(review_scores_location\tAS INT) AS      review_scores_location,\n    CAST(review_scores_value AS INT) AS         review_scores_value,\n    CAST(reviews_per_month AS FLOAT) AS         reviews_per_month,\n    CAST(price AS INT) AS                       price,\n    CAST(weekly_price AS INT) AS                weekly_price,\n    CAST(monthly_price AS INT) AS               monthly_price,\n    CAST(security_deposit AS INT) AS            security_deposit,\n    CAST(cleaning_fee AS INT) AS                cleaning_fee,\n    CAST(guests_included AS INT) AS             guests_included,\n    CAST(extra_people AS INT) AS                extra_people,\n    host_response_time, host_is_superhost, host_neighbourhood, host_identity_verified, neighbourhood, property_type, room_type, bed_type, instant_bookable,\n    cancellation_policy, require_guest_profile_picture, require_guest_phone_verification\nFROM airbnb\n\"\"\")\n\nairbnb.registerTempTable(\"sf\")",
+      "dateUpdated": "Dec 22, 2015 2:32:01 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1446103708261_1199520053",
+      "id": "20151029-002828_1160667047",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Oct 29, 2015 12:28:28 AM",
+      "dateStarted": "Dec 22, 2015 2:32:01 PM",
+      "dateFinished": "Dec 22, 2015 2:32:01 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\nSELECT AVG(host_acceptance_rate) avg_acceptance, neighbourhood\nFROM sf\nGROUP BY neighbourhood\nORDER BY 1 DESC\n",
+      "dateUpdated": "Dec 23, 2015 10:51:25 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "stackedAreaChart",
+          "height": 288.0,
+          "optionOpen": true,
+          "keys": [
+            {
+              "name": "neighbourhood",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "avg_acceptance",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "yAxis": {
+              "name": "neighbourhood",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1446103750505_1934406300",
+      "id": "20151029-002910_526160954",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "avg_acceptance\tneighbourhood\n75.03389830508475\tSunnyside\n77.15254237288136\tThe Castro\n71.85714285714286\tNaN\n75.34375\tIngleside\n71.11724137931034\tLower Haight\n72.71899012074643\tMission District\n88.875\tForest Hill\n60.0\tSunset District\n70.51132686084142\tBernal Heights\n71.1547619047619\tCow Hollow\n65.66666666666667\tFinancial District\n33.5\tPresidio\n69.62331838565022\tPacific Heights\n70.77464788732394\tNorth Beach\n78.79710144927536\tTenderloin\n68.08571428571429\tDogpatch\n66.06930693069307\tCole Valley\n38.714285714285715\tMission Bay\n70.38888888888889\tDiamond Heights\n80.0\tJapantown\n73.5\tPortola\n77.64772727272727\tDowntown\n75.81656804733728\tWestern Addition/NOPA\n60.625\tWest Portal\n78.48571428571428\tLakeshore\n99.6\tSoma\n71.90425531914893\tSoMa\n71.58974358974359\tMarina\n65.89583333333333\tChinatown\n75.53623188405797\tParkside\n50.0\tFillmore District\n64.70967741935483\tPresidio Heights\n65.92857142857143\tHayes Valley\n78.38461538461539\tBalboa Terrace\n70.56716417910448\tGlen Park\n70.22222222222223\tDaly City\n71.44194756554307\tNob Hill\n77.5\tFisherman\u0027s Wharf\n75.05460750853243\tNoe Valley\n76.14080459770115\tRichmond District\n78.69\tInner Sunset\n83.29591836734694\tTelegraph Hill\n88.03703703703704\tUnion Square\n78.32876712328768\tExcelsior\n75.98989898989899\tPotrero Hill\n54.0\tWestern Addition\n70.57894736842105\tSouth Beach\n72.55555555555556\tDuboce Triangle\n66.5\tCivic Center\n92.71428571428571\tVisitacion Valley\n79.3061224489796\tMission Terrace\n70.42857142857143\tTwin Peaks\n67.68103448275862\tRussian Hill\n33.333333333333336\tSea Cliff\n68.26086956521739\tHaight-Ashbury\n65.40707964601769\tAlamo Square\n82.1125\tBayview\n91.21428571428571\tCrocker Amazon\n83.48235294117647\tOuter Sunset\n82.67567567567568\tOceanview\n"
+      },
+      "dateCreated": "Oct 29, 2015 12:29:10 AM",
+      "dateStarted": "Dec 23, 2015 10:51:19 PM",
+      "dateFinished": "Dec 23, 2015 10:51:20 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\n-- THIS QUERY GRABS Average prices grouped by the amount of people they can accommodate\n\nWITH subquery AS(\n    SELECT AVG(price) PRICE, neighbourhood, beds, COUNT(1) AS cnt\n    FROM sf\n    WHERE beds \u003c\u003d ${max_accommodations\u003d4}\n     AND price \u003c 1000\n    GROUP BY neighbourhood, beds\n)\nSELECT * \nFROM subquery q2\nINNER JOIN (\n    SELECT DISTINCT(neighbourhood)\n    FROM subquery q1\n    WHERE q1.cnt \u003e ${min_count_of_listings\u003d50}\n) AS distinct_neigh\nON distinct_neigh.neighbourhood \u003d q2.neighbourhood\nWHERE cnt \u003e 15",
+      "dateUpdated": "Dec 27, 2015 12:18:07 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "multiBarChart",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "neighbourhood",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "PRICE",
+              "index": 0.0,
+              "aggr": "avg"
+            }
+          ],
+          "groups": [
+            {
+              "name": "beds",
+              "index": 2.0,
+              "aggr": "sum"
+            }
+          ],
+          "scatter": {
+            "yAxis": {
+              "name": "neighbourhood",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          },
+          "forceY": true,
+          "lineWithFocus": false
+        },
+        "editorMode": "ace/mode/sql",
+        "editorHide": false,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {
+          "max_accommodations": "3",
+          "min_count_of_listings": "100"
+        },
+        "forms": {
+          "max_accommodations": {
+            "name": "max_accommodations",
+            "defaultValue": "4",
+            "hidden": false
+          },
+          "min_count_of_listings": {
+            "name": "min_count_of_listings",
+            "defaultValue": "50",
+            "hidden": false
+          }
+        }
+      },
+      "jobName": "paragraph_1446103835861_-894328911",
+      "id": "20151029-003035_767788598",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "PRICE\tneighbourhood\tbeds\tcnt\tneighbourhood\n145.3839541547278\tNaN\t1\t349\tNaN\n251.73228346456693\tNaN\t2\t127\tNaN\n270.7857142857143\tNaN\t3\t28\tNaN\n160.83236994219652\tThe Castro\t1\t173\tThe Castro\n247.35211267605635\tThe Castro\t2\t71\tThe Castro\n379.6666666666667\tThe Castro\t3\t36\tThe Castro\n144.04078014184398\tMission District\t1\t564\tMission District\n226.61658031088083\tMission District\t2\t193\tMission District\n317.07142857142856\tMission District\t3\t70\tMission District\n131.42948717948718\tBernal Heights\t1\t156\tBernal Heights\n210.24137931034483\tBernal Heights\t2\t87\tBernal Heights\n274.94117647058823\tBernal Heights\t3\t34\tBernal Heights\n192.60902255639098\tPacific Heights\t1\t133\tPacific Heights\n276.16326530612247\tPacific Heights\t2\t49\tPacific Heights\n368.6666666666667\tPacific Heights\t3\t24\tPacific Heights\n143.87336244541484\tWestern Addition/NOPA\t1\t229\tWestern Addition/NOPA\n246.078125\tWestern Addition/NOPA\t2\t64\tWestern Addition/NOPA\n390.22222222222223\tWestern Addition/NOPA\t3\t27\tWestern Addition/NOPA\n164.98765432098764\tSoMa\t1\t324\tSoMa\n306.2823529411765\tSoMa\t2\t85\tSoMa\n417.6470588235294\tSoMa\t3\t17\tSoMa\n164.41176470588235\tNob Hill\t1\t187\tNob Hill\n238.78333333333333\tNob Hill\t2\t60\tNob Hill\n152.05\tNoe Valley\t1\t160\tNoe Valley\n257.40983606557376\tNoe Valley\t2\t61\tNoe Valley\n344.5\tNoe Valley\t3\t38\tNoe Valley\n120.85427135678393\tRichmond District\t1\t199\tRichmond District\n210.5681818181818\tRichmond District\t2\t88\tRichmond District\n277.3181818181818\tRichmond District\t3\t22\tRichmond District\n157.55384615384617\tPotrero Hill\t1\t130\tPotrero Hill\n269.4871794871795\tPotrero Hill\t2\t39\tPotrero Hill\n367.1764705882353\tPotrero Hill\t3\t17\tPotrero Hill\n154.14150943396226\tHaight-Ashbury\t1\t106\tHaight-Ashbury\n261.8205128205128\tHaight-Ashbury\t2\t39\tHaight-Ashbury\n356.69565217391306\tHaight-Ashbury\t3\t23\tHaight-Ashbury\n"
+      },
+      "dateCreated": "Oct 29, 2015 12:30:35 AM",
+      "dateStarted": "Dec 22, 2015 2:22:36 PM",
+      "dateFinished": "Dec 22, 2015 2:22:40 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\nSELECT review_scores_rating, price\nFROM sf\nWHERE review_scores_rating \u003e \"${min_review_score\u003d0}\"\n    AND price \u003c \"${price_max\u003d1000}\"",
+      "dateUpdated": "Dec 22, 2015 2:26:24 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "scatterChart",
+          "height": 300.0,
+          "optionOpen": true,
+          "keys": [
+            {
+              "name": "review_scores_rating",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "price",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "xAxis": {
+              "name": "review_scores_rating",
+              "index": 0.0,
+              "aggr": "sum"
+            },
+            "yAxis": {
+              "name": "price",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {
+          "min_review_score": "50"
+        },
+        "forms": {
+          "min_review_score": {
+            "name": "min_review_score",
+            "defaultValue": "0",
+            "hidden": false
+          },
+          "price_max": {
+            "name": "price_max",
+            "defaultValue": "1000",
+            "hidden": false
+          }
+        }
+      },
+      "jobName": "paragraph_1449358997313_1389259365",
+      "id": "20151205-154317_928497314",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "review_scores_rating\tprice\n89\t350\n92\t119\n100\t695\n94\t80\n92\t135\n100\t215\n94\t250\n97\t224\n93\t325\n94\t120\n98\t136\n89\t250\n100\t92\n95\t125\n93\t185\n98\t165\n99\t185\n100\t225\n96\t200\n95\t96\n94\t77\n93\t99\n91\t100\n97\t85\n95\t139\n100\t65\n100\t165\n97\t85\n98\t140\n94\t85\n97\t175\n88\t110\n98\t195\n91\t145\n92\t195\n86\t250\n100\t490\n97\t220\n96\t174\n99\t350\n98\t160\n96\t197\n93\t249\n95\t169\n100\t165\n95\t170\n95\t277\n93\t220\n95\t200\n100\t80\n100\t125\n100\t100\n100\t95\n80\t250\n100\t400\n97\t300\n95\t600\n88\t275\n60\t90\n100\t275\n96\t200\n100\t600\n100\t140\n97\t240\n97\t225\n93\t350\n100\t480\n86\t99\n100\t120\n96\t129\n90\t180\n99\t125\n100\t71\n96\t120\n97\t425\n100\t225\n87\t150\n89\t425\n100\t150\n100\t100\n64\t95\n100\t125\n100\t150\n95\t275\n97\t230\n90\t211\n90\t349\n96\t180\n95\t250\n93\t390\n100\t599\n95\t795\n97\t250\n88\t375\n73\t100\n93\t350\n91\t250\n97\t115\n65\t175\n94\t116\n93\t300\n92\t150\n94\t139\n100\t299\n96\t300\n99\t190\n100\t250\n97\t260\n94\t192\n75\t155\n91\t650\n97\t495\n100\t90\n94\t399\n96\t250\n98\t195\n89\t69\n82\t171\n89\t282\n97\t295\n80\t400\n100\t200\n100\t200\n100\t225\n100\t120\n98\t225\n94\t375\n90\t500\n93\t465\n88\t99\n83\t79\n89\t300\n88\t171\n100\t191\n94\t365\n85\t172\n96\t264\n99\t500\n90\t125\n90\t119\n96\t245\n95\t125\n88\t85\n100\t600\n100\t125\n99\t190\n83\t500\n93\t400\n99\t140\n91\t90\n95\t175\n93\t443\n100\t200\n100\t300\n99\t300\n98\t350\n85\t89\n98\t160\n96\t50\n100\t80\n90\t220\n93\t360\n94\t179\n90\t319\n94\t299\n94\t145\n96\t223\n96\t165\n99\t205\n90\t250\n94\t79\n97\t99\n95\t300\n89\t90\n96\t650\n98\t220\n100\t185\n100\t215\n100\t245\n94\t145\n98\t130\n100\t89\n95\t98\n100\t189\n96\t40\n100\t100\n98\t300\n100\t350\n60\t140\n95\t300\n95\t350\n100\t175\n82\t189\n90\t200\n95\t120\n100\t220\n100\t200\n100\t40\n100\t50\n95\t40\n93\t50\n100\t300\n100\t115\n87\t125\n98\t175\n98\t325\n94\t139\n100\t175\n96\t165\n94\t825\n100\t525\n98\t245\n77\t79\n100\t275\n94\t145\n93\t500\n92\t230\n70\t499\n95\t175\n87\t85\n96\t390\n100\t80\n100\t90\n90\t200\n91\t108\n100\t110\n96\t375\n90\t175\n92\t235\n95\t69\n93\t120\n98\t375\n90\t225\n96\t175\n89\t53\n80\t699\n100\t90\n100\t145\n92\t500\n99\t200\n95\t50\n93\t102\n89\t300\n100\t155\n98\t159\n100\t150\n73\t95\n60\t105\n98\t350\n96\t590\n100\t80\n84\t110\n88\t90\n91\t175\n99\t120\n96\t424\n97\t275\n94\t159\n91\t650\n93\t190\n97\t559\n100\t150\n95\t250\n82\t69\n93\t40\n100\t249\n96\t139\n100\t495\n95\t150\n96\t75\n97\t125\n93\t140\n96\t120\n100\t170\n96\t185\n100\t450\n90\t145\n90\t130\n93\t50\n91\t107\n96\t120\n90\t100\n95\t135\n90\t150\n100\t85\n85\t110\n98\t119\n100\t92\n90\t400\n100\t169\n96\t300\n98\t160\n77\t69\n95\t295\n100\t250\n92\t180\n94\t207\n100\t124\n96\t170\n96\t525\n87\t399\n100\t500\n100\t240\n88\t235\n100\t75\n100\t550\n96\t200\n91\t110\n100\t159\n97\t94\n80\t275\n100\t400\n100\t145\n80\t400\n80\t69\n95\t125\n98\t150\n100\t389\n96\t125\n100\t150\n96\t165\n100\t285\n100\t75\n95\t150\n100\t125\n98\t89\n100\t150\n99\t630\n99\t125\n99\t132\n95\t200\n91\t239\n100\t250\n100\t250\n92\t85\n96\t75\n100\t70\n92\t79\n91\t81\n96\t145\n97\t109\n96\t110\n96\t50\n99\t130\n99\t120\n100\t127\n88\t129\n100\t220\n93\t299\n98\t200\n100\t175\n95\t299\n94\t85\n100\t175\n94\t200\n100\t295\n98\t325\n88\t90\n95\t99\n91\t300\n96\t85\n100\t375\n96\t90\n83\t149\n98\t119\n94\t65\n93\t85\n96\t240\n96\t65\n100\t80\n90\t85\n80\t100\n98\t145\n89\t48\n98\t250\n80\t135\n97\t400\n87\t175\n92\t99\n90\t68\n97\t65\n95\t200\n84\t89\n95\t110\n93\t195\n100\t145\n97\t98\n96\t92\n87\t110\n85\t275\n90\t75\n92\t55\n100\t50\n94\t79\n95\t250\n97\t120\n93\t300\n98\t52\n95\t62\n93\t120\n96\t245\n100\t130\n91\t129\n93\t290\n87\t125\n100\t136\n95\t145\n100\t800\n89\t325\n75\t80\n60\t131\n84\t225\n95\t145\n97\t130\n94\t89\n91\t80\n95\t99\n94\t298\n99\t99\n94\t225\n100\t149\n97\t85\n84\t219\n95\t204\n75\t65\n80\t80\n80\t80\n100\t50\n100\t42\n88\t175\n80\t500\n95\t197\n100\t99\n89\t88\n80\t90\n87\t109\n100\t132\n100\t125\n86\t89\n85\t220\n100\t100\n100\t289\n100\t94\n97\t199\n93\t179\n98\t210\n97\t190\n70\t135\n60\t666\n90\t125\n90\t145\n91\t165\n99\t179\n100\t202\n100\t190\n90\t199\n100\t180\n85\t145\n96\t169\n94\t269\n95\t150\n100\t180\n100\t195\n100\t89\n86\t124\n97\t246\n88\t139\n90\t160\n97\t125\n95\t165\n100\t180\n96\t300\n90\t146\n90\t151\n95\t229\n96\t600\n100\t207\n100\t110\n100\t180\n100\t365\n100\t180\n97\t190\n97\t250\n75\t89\n97\t175\n93\t150\n82\t89\n90\t120\n95\t195\n90\t152\n92\t200\n100\t175\n100\t209\n98\t60\n70\t100\n100\t599\n100\t169\n90\t90\n77\t80\n100\t180\n95\t180\n90\t155\n82\t118\n83\t89\n87\t166\n87\t100\n83\t99\n87\t150\n96\t369\n100\t300\n94\t299\n100\t79\n84\t98\n95\t115\n100\t90\n98\t140\n98\t169\n90\t300\n83\t149\n86\t89\n82\t89\n90\t230\n100\t99\n80\t300\n98\t98\n100\t500\n88\t165\n100\t190\n95\t150\n95\t135\n88\t136\n100\t197\n90\t175\n60\t139\n77\t99\n83\t88\n53\t141\n96\t250\n89\t250\n97\t169\n84\t89\n92\t125\n100\t145\n83\t70\n80\t150\n100\t197\n98\t180\n90\t390\n95\t65\n93\t200\n92\t200\n100\t150\n88\t270\n60\t140\n100\t250\n100\t125\n100\t375\n90\t175\n100\t59\n95\t175\n97\t225\n92\t207\n99\t115\n95\t149\n96\t232\n80\t80\n88\t99\n80\t99\n84\t80\n95\t99\n92\t170\n97\t189\n87\t89\n85\t199\n69\t75\n94\t150\n90\t150\n98\t179\n100\t229\n95\t129\n80\t140\n92\t115\n83\t59\n94\t179\n96\t180\n98\t275\n95\t169\n100\t700\n100\t600\n80\t170\n70\t180\n100\t145\n90\t99\n95\t250\n80\t200\n86\t125\n100\t180\n98\t200\n88\t89\n84\t120\n96\t140\n92\t60\n96\t199\n100\t80\n100\t180\n93\t230\n100\t200\n100\t140\n100\t175\n96\t120\n96\t200\n100\t85\n100\t229\n85\t195\n86\t89\n94\t150\n70\t80\n96\t180\n94\t400\n93\t210\n100\t145\n100\t175\n91\t199\n100\t185\n93\t219\n92\t99\n88\t160\n88\t89\n100\t270\n87\t165\n100\t175\n100\t204\n100\t90\n93\t180\n82\t89\n95\t190\n80\t110\n98\t130\n91\t230\n91\t100\n100\t300\n98\t285\n96\t155\n99\t174\n100\t158\n95\t188\n100\t115\n100\t375\n90\t325\n87\t83\n100\t35\n100\t129\n94\t130\n98\t235\n86\t265\n93\t99\n80\t130\n60\t60\n100\t120\n100\t105\n100\t145\n80\t90\n96\t99\n96\t78\n100\t99\n84\t110\n100\t40\n98\t250\n80\t78\n70\t65\n75\t125\n91\t65\n80\t199\n93\t65\n100\t135\n100\t200\n100\t110\n94\t150\n100\t120\n100\t150\n100\t250\n96\t120\n87\t100\n100\t49\n93\t244\n96\t130\n87\t110\n93\t100\n95\t172\n100\t150\n88\t150\n100\t185\n92\t196\n96\t504\n97\t300\n100\t166\n100\t450\n96\t229\n100\t250\n100\t150\n94\t179\n93\t350\n93\t234\n100\t245\n91\t115\n100\t120\n100\t70\n98\t200\n92\t300\n100\t400\n99\t149\n100\t120\n92\t275\n85\t189\n100\t200\n99\t225\n100\t225\n96\t350\n100\t210\n91\t144\n100\t814\n93\t205\n100\t160\n87\t230\n100\t425\n98\t174\n97\t450\n100\t120\n86\t150\n95\t119\n99\t200\n98\t425\n80\t140\n100\t300\n97\t210\n91\t239\n95\t200\n100\t80\n93\t497\n97\t300\n98\t170\n85\t400\n83\t594\n73\t196\n91\t168\n93\t200\n91\t145\n77\t125\n97\t130\n100\t399\n98\t198\n93\t240\n97\t295\n99\t120\n94\t189\n85\t180\n100\t140\n93\t219\n100\t300\n60\t440\n100\t200\n96\t298\n83\t144\n91\t150\n100\t225\n87\t225\n96\t295\n100\t250\n93\t288\n100\t300\n100\t300\n92\t350\n90\t279\n97\t225\n92\t165\n100\t230\n100\t350\n95\t250\n94\t129\n94\t170\n100\t179\n95\t145\n94\t299\n95\t65\n80\t190\n100\t220\n100\t700\n99\t350\n100\t180\n90\t299\n83\t120\n100\t400\n80\t180\n93\t900\n85\t100\n98\t145\n100\t150\n100\t675\n97\t349\n60\t200\n100\t220\n94\t325\n93\t130\n97\t100\n87\t305\n93\t125\n100\t350\n68\t100\n94\t350\n97\t147\n98\t649\n100\t140\n95\t149\n97\t395\n95\t200\n100\t750\n96\t200\n100\t175\n95\t250\n100\t230\n100\t300\n93\t144\n88\t120\n94\t89\n98\t86\n94\t295\n100\t135\n100\t129\n96\t275\n100\t490\n80\t189\n96\t146\n98\t120\n93\t125\n98\t118\n95\t110\n95\t115\n93\t135\n100\t75\n98\t250\n95\t249\n100\t170\n94\t275\n95\t250\n90\t119\n91\t125\n100\t200\n90\t550\n99\t250\n94\t250\n85\t329\n100\t175\n100\t100\n96\t180\n97\t139\n93\t145\n100\t110\n93\t119\n93\t140\n90\t175\n100\t145\n92\t78\n100\t130\n98\t115\n100\t260\n98\t249\n86\t192\n95\t156\n96\t159\n60\t185\n91\t345\n96\t250\n100\t178\n98\t135\n94\t245\n100\t250\n100\t165\n100\t320\n88\t199\n100\t200\n91\t199\n76\t120\n90\t269\n98\t320\n100\t300\n100\t169\n83\t150\n90\t240\n100\t175\n96\t400\n97\t450\n99\t595\n100\t299\n94\t185\n98\t200\n100\t160\n100\t349\n97\t115\n91\t360\n97\t175\n86\t108\n95\t195\n97\t165\n97\t280\n97\t275\n98\t249\n91\t141\n98\t95\n100\t350\n100\t195\n97\t74\n80\t250\n97\t399\n96\t140\n99\t120\n96\t145\n97\t279\n73\t189\n94\t395\n100\t110\n97\t99\n92\t114\n100\t259\n93\t100\n93\t175\n98\t575\n87\t300\n92\t140\n90\t200\n95\t111\n93\t94\n100\t150\n95\t250\n96\t100\n97\t135\n88\t242\n96\t175\n86\t145\n90\t180\n98\t160\n100\t175\n96\t120\n91\t169\n80\t200\n96\t169\n100\t400\n99\t379\n92\t130\n100\t215\n100\t135\n88\t100\n98\t199\n100\t250\n90\t175\n98\t125\n100\t185\n99\t350\n91\t150\n93\t150\n93\t100\n99\t195\n100\t235\n86\t79\n93\t250\n100\t490\n98\t225\n90\t256\n100\t240\n93\t100\n100\t80\n98\t69\n100\t189\n80\t230\n82\t150\n100\t200\n100\t279\n100\t270\n98\t250\n93\t72\n100\t200\n98\t85\n100\t250\n99\t135\n100\t110\n95\t400\n94\t185\n91\t175\n80\t149\n93\t149\n97\t250\n100\t325\n100\t140\n97\t150\n100\t150\n78\t145\n100\t250\n90\t250\n97\t129\n95\t180\n93\t160\n\n\u003cfont color\u003dred\u003eResults are limited by 1000.\u003c/font\u003e"
+      },
+      "dateCreated": "Dec 5, 2015 3:43:17 PM",
+      "dateStarted": "Dec 22, 2015 2:26:24 PM",
+      "dateFinished": "Dec 22, 2015 2:26:24 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "dateUpdated": "Dec 6, 2015 7:30:06 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1449359146846_-794408470",
+      "id": "20151205-154546_1847543584",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT"
+      },
+      "dateCreated": "Dec 5, 2015 3:45:46 PM",
+      "dateStarted": "Dec 6, 2015 7:30:13 PM",
+      "dateFinished": "Dec 6, 2015 7:30:14 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "Airbnb",
+  "id": "2B2VUK3WU",
+  "angularObjects": {
+    "2B4TBD16A": [],
+    "2B5PYBQ4Q": [],
+    "2B5SXPRMT": [],
+    "2B3W6EHNG": [],
+    "2B371ZTSC": [],
+    "2B4Q641KU": [],
+    "2B511VBNA": [],
+    "2B51G8KD2": [],
+    "2B27HBXA7": [],
+    "2B2Y3NMUU": [],
+    "2B31DUBT3": [],
+    "2B3S32PZ9": [],
+    "2B531NBD8": [],
+    "2B2R39PBH": []
+  },
+  "config": {
+    "looknfeel": "default"
+  },
+  "info": {}
+}
